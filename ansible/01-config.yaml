@@ -1,5 +1,6 @@
-- name: set timezone to Europe/Madrid
-  command: timedatectl set-timezone Europe/Madrid
+- name: Set timezone to Europe/Madrid
+  timezone:
+    name: Europe/Madrid
   
 - name: install chrony
   dnf:
