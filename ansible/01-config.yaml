@@ -12,26 +12,39 @@
       dnf:
         name: chrony
         state: latest
+      become: yes
+      become_method: sudo
     - name: enable chrony
       service:
         name: chronyd
         enabled: yes
+      become: yes
+      become_method: sudo
     - name: start chronyd
       service:
         name: chronyd
         state: started
+      become: yes
+      become_method: sudo
     - name: Make sure ntp is started and enabled on restart
       service:
         name: ntp
         state: started
         enabled: yes
+      become: yes
+      become_method: sudo
     - name: Disable SELinux
       selinux:
         state: disabled
-    - name: install chrony
+      become: yes
+      become_method: sudo
+    - name: install nfs utils
       dnf:
         name: 
           - nfs-utils
           - nfs4-acl-tools
           - wget
         state: latest
+      become: yes
+      become_method: sudo
+
