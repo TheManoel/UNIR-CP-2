@@ -27,7 +27,7 @@
       become: yes
       become_method: sudo
     - name: run Timedatectl
-        command: timedatectl set-ntp true
+      command: timedatectl set-ntp true
       become: yes
       become_method: sudo
     - name: Disable SELinux
