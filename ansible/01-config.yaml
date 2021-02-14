@@ -26,11 +26,8 @@
         state: started
       become: yes
       become_method: sudo
-    - name: Make sure ntp is started and enabled on restart
-      service:
-        name: ntp
-        state: started
-        enabled: yes
+    - name: run Timedatectl
+        command: timedatectl set-ntp true
       become: yes
       become_method: sudo
     - name: Disable SELinux
