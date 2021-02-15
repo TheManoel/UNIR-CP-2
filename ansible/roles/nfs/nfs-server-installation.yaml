@@ -1,0 +1,26 @@
+---
+
+- name: installing nfs server
+  hosts: master.local
+  tasks:
+    - name: install nfs utils
+      dnf:
+        name: 
+          - nfs-utils
+          - net-tools
+    - name: enable nfs-server
+      service:
+        name: nfs-server
+        enabled: yes
+        started: yes
+    - name: set nodes on exports file
+      lineinfile:
+        dest: /etc/exports
+        line: "{{ item.line }}"
+      with_items:
+        - { line: '/srv/nfs 192.168.56.101(rw,sync)'}
+        - { line: '/srv/nfs 192.168.56.102(rw,sync)'}
+    - name: run exportfs
+      command: timedatectl set-ntp true
+      become: yes
+      become_method: sudo

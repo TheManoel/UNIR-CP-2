@@ -1,0 +1,42 @@
+---
+
+- name: set time zone to Europe/Madrid
+  timezone:
+    name: Europe/Madrid
+  become: yes
+
+- name: install chrony
+  dnf:
+    name: chrony
+    state: latest
+  become: yes
+
+- name: enable chrony
+  service:
+    name: chronyd
+    enabled: yes
+  become: yes
+
+- name: start chronyd
+  service:
+    name: chronyd
+    state: started
+  become: yes
+
+- name: run Timedatectl
+  command: timedatectl set-ntp true
+  become: yes
+
+- name: Disable SELinux
+  selinux:
+    state: disabled
+  become: yes
+  
+- name: install nfs utils
+  dnf:
+    name: 
+      - nfs-utils
+      - nfs4-acl-tools
+      - wget
+    state: latest
+  become: yes
