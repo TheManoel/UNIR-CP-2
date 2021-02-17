@@ -4,6 +4,7 @@
   lineinfile:
     dest: /etc/exports
     line: "{{ item.line }}"
+  become: yes
   with_items:
     - { line: '/srv/nfs 192.168.56.101(rw,sync)'}
     - { line: '/srv/nfs 192.168.56.102(rw,sync)'}

@@ -5,3 +5,4 @@
     name: nfs-server
     enabled: yes
     started: yes
+  become: yes
