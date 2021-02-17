@@ -2,7 +2,7 @@
 
 - name: exposing firewall ports
   firewalld:
-    service: {{ item }}
+    service: "{{ item }}"
     permanent: yes
     state: enabled
     inmediate: yes
