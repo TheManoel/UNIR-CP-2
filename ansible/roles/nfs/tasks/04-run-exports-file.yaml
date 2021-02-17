@@ -1,7 +1,7 @@
 ---
 
 - name: run exportfs
-  command: {{ item }}
+  command: "{{ item }}"
   with_items: 
     - exportfs -r
     - exportfs -s
