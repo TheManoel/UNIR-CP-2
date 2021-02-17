@@ -4,5 +4,5 @@
   service:
     name: nfs-server
     enabled: yes
-    started: yes
+    state: started
   become: yes
