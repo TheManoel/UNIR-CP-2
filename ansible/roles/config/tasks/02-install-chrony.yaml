@@ -1,0 +1,7 @@
+---
+
+- name: install chrony
+  dnf:
+    name: chrony
+    state: latest
+  become: yes

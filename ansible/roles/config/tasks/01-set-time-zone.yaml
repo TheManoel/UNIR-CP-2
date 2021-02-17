@@ -1,0 +1,6 @@
+---
+
+- name: set time zone to Europe/Madrid
+  timezone:
+    name: Europe/Madrid
+  become: yes

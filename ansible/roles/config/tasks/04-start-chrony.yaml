@@ -1,0 +1,7 @@
+---
+
+- name: start chronyd
+  service:
+    name: chronyd
+    state: started
+  become: yes

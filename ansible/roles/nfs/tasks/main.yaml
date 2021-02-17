@@ -1,0 +1,6 @@
+---
+
+- include_tasks: 01-install-nfs.yaml
+- include_tasks: 02-enable-nfs.yaml
+- include_tasks: 03-set-nodes-on-exports.yaml
+- include_tasks: 04-run-exports-file.yaml

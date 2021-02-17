@@ -1,0 +1,7 @@
+---
+
+- name: enable nfs-server
+  service:
+    name: nfs-server
+    enabled: yes
+    started: yes

@@ -1,0 +1,7 @@
+---
+
+- name: enable chrony
+  service:
+    name: chronyd
+    enabled: yes
+  become: yes
