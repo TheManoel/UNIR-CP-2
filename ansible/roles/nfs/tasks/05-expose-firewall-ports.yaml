@@ -12,6 +12,6 @@
     - mountd
 
 - name: reload service firewalld
-  systemd:
+  service:
     name: firewalld
-    state: reloaded
+    state: restarted
