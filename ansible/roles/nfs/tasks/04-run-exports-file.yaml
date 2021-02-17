@@ -1,8 +1,8 @@
 ---
 
 - name: run exportfs
-  command: exportfs -{{ item }}
+  command: {{ item }}
   with_items: 
-    - r
-    - s
+    - exportfs -r
+    - exportfs -s
   become: yes
