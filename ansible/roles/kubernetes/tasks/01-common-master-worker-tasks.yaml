@@ -1,0 +1,108 @@
+---
+
+- name: activate transparent masquerading
+  modprobe:
+    name: br_netfilter
+    state: present
+  become: yes
+
+- name: exposing firewall ports
+  firewalld:
+    masquerade: yes
+    permanent: yes
+  become: true
+
+- name: reload service firewalld
+  service:
+    name: firewalld
+    state: restarted
+  become: true
+
+- name: check/create file k8s.config
+  copy:
+    content: "{{ item }}"
+    dest: /etc/sysctl.d/k8s.conf
+    force: no
+    group: sys
+    owner: root
+  with_items:
+    - net.bridge.bridge-nf-call-ip6tables = 1
+    - net.bridge.bridge-nf-call-iptables = 1
+
+- name: reload sysctl
+  command: sysctl --system
+
+- name: deactivate swap
+  command: swapoff -a
+
+- name: delete line in /etc/fstab for swap
+  lineinfile: 
+    dest: /etc/fstab
+    state: absent 
+    regexp: '^sed -i* \'\/swap\/d\' \/etc\/fstab'
+
+- name: Add Docker repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+  become: yes
+
+- name: Enable Docker Edge repo
+  ini_file:
+    dest: /etc/yum.repos.d/docer-ce.repo
+    section: 'docker-ce-edge'
+    option: enabled
+    value: 0
+  become: yes
+
+- name: Install Docker
+  package:
+    name: docker-ce-19.03.14-3.el8
+    state: present
+  become: yes
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
+
+- name: configure k8s repo
+  copy:
+    content: "{{ item }}"
+    dest: /etc/yum.repos.d/kubernetes.repo
+    force: no
+    group: sys
+    owner: root
+  with_items:
+    - "[kubernetes]"
+    - name=Kubernetes
+    - baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    - enabled=1
+    - gpgcheck=1
+    - repo_gpgcheck=1
+    - gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+    - exclude=kubelet kubeadm kubectl
+    - EOF
+
+- name: Install these packages - kubelet kubeadm kubectl
+  dnf:
+    name: "{{ packages }}"
+    state: latest
+    disable_excludes: all
+    exclude: kubernetes
+  vars:
+    packages:
+      - kubelet
+      - kubeadm
+      - kubectl
+  become: yes
+  become_user: root
+
+- name: Start kubelet service
+  service:
+    name: kubelet
+    state: started
+    enabled: yes
+  become: yes
