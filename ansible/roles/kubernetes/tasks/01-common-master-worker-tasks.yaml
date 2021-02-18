@@ -8,15 +8,10 @@
 
 - name: exposing firewall ports
   firewalld:
-    service: "{{ item }}"
     permanent: yes
     masquerade: yes
     state: enabled
   become: true
-  with_items:
-    - nfs
-    - rpc-bind
-    - mountd
 
 - name: reload service firewalld
   service:

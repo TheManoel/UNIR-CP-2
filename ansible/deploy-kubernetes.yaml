@@ -6,6 +6,4 @@
     - "group_vars/kubernetes.yaml"
   gather_facts: true
   roles:
-    - config
-    - nfs
     - kubernetes
