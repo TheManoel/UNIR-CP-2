@@ -33,16 +33,19 @@
 
 - name: reload sysctl
   command: sysctl --system
+  become: true
 
 - name: deactivate swap
   command: swapoff -a
+  become: true
 
 - name: delete line in /etc/fstab for swap
   lineinfile: 
     dest: /etc/fstab
     state: absent 
     regexp: '^sed -i*'
-
+  become: true
+  
 - name: Add Docker repo
   get_url:
     url: https://download.docker.com/linux/centos/docker-ce.repo
