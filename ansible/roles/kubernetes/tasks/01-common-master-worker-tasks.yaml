@@ -61,14 +61,13 @@
   become: yes
 
 - name: Install Docker
-  package:
-    name: "{{ packages }}"
+  dnf:
+    name: "{{ item }}"
     state: present
-  vars:
-    packages:
-      - docker-ce-19.03.14-3.el8
-      - containerd.io
   become: yes
+  with_items:
+    - docker-ce-19.03.14-3.el8
+    - containderd.io
 
 - name: Start Docker service
   service:
