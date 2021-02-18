@@ -60,16 +60,10 @@
     value: 0
   become: yes
 
-- name: Install containerd.io package
-  dnf:
-    name: https://download.docker.com/linux/centos/7/x86_64/stable/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
-  become: yes
-
 - name: Install Docker
   dnf:
     name:
      - docker-ce-19.03.14-3.el8
-     - containderd.io
   become: yes
 
 - name: Start Docker service
