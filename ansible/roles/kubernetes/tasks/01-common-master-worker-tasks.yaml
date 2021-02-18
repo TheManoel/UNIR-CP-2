@@ -67,7 +67,7 @@
   vars:
     packages:
       - docker-ce-19.03.14-3.el8
-      - containerd-io
+      - containerd.io
   become: yes
 
 - name: Start Docker service
