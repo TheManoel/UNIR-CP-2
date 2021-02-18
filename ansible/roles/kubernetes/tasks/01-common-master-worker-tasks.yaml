@@ -63,7 +63,6 @@
 - name: Install Docker
   package:
     name: "{{ packages }}"
-    name: docker-ce-19.03.14-3.el8
     state: present
   vars:
     packages:
