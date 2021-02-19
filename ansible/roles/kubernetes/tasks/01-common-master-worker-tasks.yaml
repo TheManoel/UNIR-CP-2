@@ -96,8 +96,7 @@
   dnf:
     name: "{{ packages }}"
     state: latest
-    disable_excludes: all
-    exclude: kubernetes
+    disable_excludes: kubernetes
   vars:
     packages:
       - kubelet
