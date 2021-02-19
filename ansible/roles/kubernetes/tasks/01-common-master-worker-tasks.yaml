@@ -80,6 +80,7 @@
     force: no
     group: sys
     owner: root
+  become: yes
   with_items:
     - "[kubernetes]"
     - name=Kubernetes
