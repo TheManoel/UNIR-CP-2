@@ -45,9 +45,9 @@
     - none
   become: true
 
-  - name: Disable swap
-    command: swapoff -a
-    when: ansible_swaptotal_mb > 0
+- name: Disable swap
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
 
 - name: Add Docker repo
   get_url:
