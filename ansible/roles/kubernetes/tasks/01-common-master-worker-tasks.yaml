@@ -96,6 +96,7 @@
     name: "{{ packages }}"
     state: present
     update_cache: yes
+    disable_excludes: kubernetes
   vars:
     packages:
       - kubelet 
