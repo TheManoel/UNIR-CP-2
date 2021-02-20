@@ -19,6 +19,15 @@
     state: restarted
   become: true
 
+- name: configure file k8s.config
+  shell:
+    cmd: |
+      cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.bridge.bridge-nf-call-iptables = 1
+      EOF
+  become: yes
+
 - name: check/create file k8s.config
   copy:
     content: "{{ item }}"
