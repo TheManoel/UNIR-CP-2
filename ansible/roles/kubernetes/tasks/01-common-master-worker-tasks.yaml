@@ -94,16 +94,11 @@
 
 - name: Install these packages - kubelet kubeadm kubectl
   dnf:
-    name: "{{ packages }}"
-    state: latest
-    disable_excludes: kubernetes
-  vars:
-    packages:
+    name: 
       - kubelet
       - kubeadm
       - kubectl
   become: yes
-  become_user: root
 
 - name: Start kubelet service
   service:
