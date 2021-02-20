@@ -89,17 +89,17 @@
     filename: kubernetes.list
   become: yes
 
-  - name: Install Kubernetes binaries
-    apt: 
-      name: "{{ packages }}"
-      state: present
-      update_cache: yes
-    vars:
-      packages:
-        - kubelet 
-        - kubeadm 
-        - kubectl
-    become: yes
+- name: Install Kubernetes binaries
+  apt: 
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+      - kubelet 
+      - kubeadm 
+      - kubectl
+  become: yes
 
 - name: Restart kubelet
   service:
