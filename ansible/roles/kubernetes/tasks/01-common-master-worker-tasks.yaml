@@ -36,14 +36,14 @@
   become: true
 
 - name: Remove swapfile from /etc/fstab
-    mount:
-      name: "{{ item }}"
-      fstype: swap
-      state: absent
-    with_items:
-      - swap
-      - none
-    become: true
+  mount:
+    name: "{{ item }}"
+    fstype: swap
+    state: absent
+  with_items:
+    - swap
+    - none
+  become: true
 
   - name: Disable swap
     command: swapoff -a
@@ -88,7 +88,7 @@
     state: present
     filename: kubernetes.list
   become: yes
-  
+
   - name: Install Kubernetes binaries
     apt: 
       name: "{{ packages }}"
