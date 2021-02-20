@@ -35,16 +35,19 @@
   command: sysctl --system
   become: true
 
-- name: deactivate swap
-  command: swapoff -a
-  become: true
+- name: Remove swapfile from /etc/fstab
+    mount:
+      name: "{{ item }}"
+      fstype: swap
+      state: absent
+    with_items:
+      - swap
+      - none
+    become: true
 
-- name: delete line in /etc/fstab for swap
-  lineinfile: 
-    dest: /etc/fstab
-    state: absent 
-    regexp: '^sed -i*'
-  become: true
+  - name: Disable swap
+    command: swapoff -a
+    when: ansible_swaptotal_mb > 0
 
 - name: Add Docker repo
   get_url:
@@ -73,36 +76,34 @@
     enabled: yes
   become: yes
 
-- name: configure k8s repo
-  copy:
-    content: "{{ item }}"
-    dest: /etc/yum.repos.d/kubernetes.repo
-    force: no
-    group: sys
-    owner: root
-  become: yes
-  with_items:
-    - "[kubernetes]"
-    - name=Kubernetes
-    - baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-    - enabled=1
-    - gpgcheck=1
-    - repo_gpgcheck=1
-    - gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-    - exclude=kubelet kubeadm kubectl
-    - EOF
-
-- name: Install these packages - kubelet kubeadm kubectl
-  dnf:
-    name: 
-      - kubelet
-      - kubeadm
-      - kubectl
+- name: Add an apt signing key for Kubernetes
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
   become: yes
 
-- name: Start kubelet service
+- name: Adding apt repository for Kubernetes
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes.list
+  become: yes
+  
+  - name: Install Kubernetes binaries
+    apt: 
+      name: "{{ packages }}"
+      state: present
+      update_cache: yes
+    vars:
+      packages:
+        - kubelet 
+        - kubeadm 
+        - kubectl
+    become: yes
+
+- name: Restart kubelet
   service:
     name: kubelet
-    state: started
-    enabled: yes
+    daemon_reload: yes
+    state: restarted
   become: yes
