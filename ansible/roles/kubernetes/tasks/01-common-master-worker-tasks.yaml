@@ -77,7 +77,7 @@
   become: yes
 
 - name: Configure kubernetes repo
-- shell:
+  shell:
     cmd: |
       cat <<EOF > /etc/yum.repos.d/kubernetes.repo
       [kubernetes]
