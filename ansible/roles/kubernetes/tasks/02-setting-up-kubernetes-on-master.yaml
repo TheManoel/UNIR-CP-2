@@ -61,6 +61,13 @@
   become: true
   when: inventory_hostname in groups['master']
 
+- name: install pexpect module to answer prompts
+  dnf: 
+    name:
+      - pexpect
+  become: true
+  when: inventory_hostname in groups['master']
+
 - name: reset kubeadm
   expect:
     command: kubeadm reset
