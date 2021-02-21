@@ -39,11 +39,13 @@
   local_action:
     module: copy
     content: |
-      {{ init_output.stdout[-2] }}
-      {{ init_output.stdout[-1] }}
+      {{ init_output }}
+#      {{ init_output.stdout_lines[-2] }}
+#      {{ init_output.stdout_lines[-1] }}
     dest: "./join-command"
+#
 
-- name: Join workers to cluster
-  command: ./join-command
-  become: true
-  when: inventory_hostname in groups['workers']
+#- name: Join workers to cluster
+#  command: ./join-command
+#  become: true
+#  when: inventory_hostname in groups['workers']
