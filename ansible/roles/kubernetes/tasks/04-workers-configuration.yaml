@@ -37,7 +37,7 @@
 - debug:
     msg: "{{ init_output }}"
 
-- name: Join workers to cluster
-  command: ./join-command
-  become: true
-  when: inventory_hostname in groups['workers']
+#- name: Join workers to cluster
+#  command: ./join-command
+#  become: true
+#  when: inventory_hostname in groups['workers']
