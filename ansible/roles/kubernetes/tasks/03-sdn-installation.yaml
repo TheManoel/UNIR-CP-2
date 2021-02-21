@@ -3,4 +3,4 @@
 - name: Download Calico custom resources
   get_url:
     url: https://docs.projectcalico.org/manifests/custom-resources.yaml
-    dest: /roles/kubernetes/calico
+    dest: /etc/calico/custom_resources.yaml
