@@ -1,0 +1,72 @@
+---
+- hosts: master
+- gather_facts: false
+- tasks: 
+  - name: config firewall ports to access kubernetes
+    firewalld:
+      permanent: yes
+      port: "{{ item }}"
+    become: true
+    with_items:
+      - 6443/tcp
+      - 2379-2380/tcp
+      - 10250/tcp
+      - 10251/tcp
+      - 10252/tcp
+      - 10255/tcp
+
+  - name: reload service firewalld
+    service:
+      name: firewalld
+      state: restarted
+    become: true
+
+  - name: config kubeadm
+    command: kubeadm config images pull
+    become: true
+
+  - name: config firewall access to workers
+    firewalld:
+      permanent: yes
+      rich_rule: "{{ item }}"
+    become: true
+    with_items:
+      - rule family=ipv4 source address={{master_ip}}/32 accept
+      - rule family=ipv4 source address={{worker_ip}}/32 accept
+
+  - name: reload service firewalld
+    service:
+      name: firewalld
+      state: restarted
+    become: true
+
+  - name: config container access to localhost
+    firewalld:
+      permanent: yes
+      zone: public
+      rich_rule: rule family=ipv4 source address=172.17.0.0/16 accept
+    become: true
+
+  - name: reload service firewalld
+    service:
+      name: firewalld
+      state: restarted
+    become: true
+
+  - name: config kubeadm
+    command: kubeadm init --pod-network-cidr 192.169.0.0/16
+    become: true
+
+  - name: defining POD network
+    command: kubeadm init --pod-network-cidr 192.169.0.0/16
+    become: true
+    register: kubeadm_pod_network
+
+  - name: defining POD network
+    command: "{{ item }}"
+    become: true
+    with_items:
+      - mkdir -p /root/.kube
+      - cp -i /etc/kubernetes/admin.conf /root/.kube/config
+      - chown $(id -u):$(id -g) /root/.kube/config
+      - kubectl get nodes
