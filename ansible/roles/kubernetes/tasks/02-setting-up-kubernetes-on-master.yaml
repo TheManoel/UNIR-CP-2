@@ -67,12 +67,12 @@
   register: kubeadm_pod_network
   when: inventory_hostname in groups['master']
 
-- name: defining POD network
+- name: authorize root user access to cluster
   command: "{{ item }}"
   become: true
   with_items:
     - mkdir -p /root/.kube
     - cp -i /etc/kubernetes/admin.conf /root/.kube/config
-    - chown $(id -u):$(id -g) /root/.kube/config
+    - chown root:root /root/.kube/config
     - kubectl get nodes
   when: inventory_hostname in groups['master']
