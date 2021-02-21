@@ -95,7 +95,6 @@
   user:
     name: kubeadmin
     state: present
-    password: "{{ default_user_password | password_hash('sha512', 'A512') }}"
   become: true
   when: inventory_hostname in groups['master']
 
