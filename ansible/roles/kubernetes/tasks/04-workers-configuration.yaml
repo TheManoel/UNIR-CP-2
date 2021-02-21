@@ -31,14 +31,19 @@
 - name: defining POD network
   command: kubeadm init --pod-network-cidr 192.169.0.0/16
   become: true
-  register: kubeadm_pod_network
+  register: init_output
   when: inventory_hostname in groups['master']
+
+- name: Copy join command to local file
+  local_action:
+    module: copy
+    content: |
+      {{ init_output.stdout_lines[-2] }}
+      {{ init_output.stdout_lines[-1] }}
+    dest: "./join-command"
 #
 
-- debug:
-    msg: "{{ kubeadm_pod_network }}"
-
 - name: Join workers to cluster
-  command: "{{ kubeadm_pod_network }}"
+  command: ./join-command
   become: true
   when: inventory_hostname in groups['workers']
