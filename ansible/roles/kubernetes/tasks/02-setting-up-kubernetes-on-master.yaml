@@ -61,6 +61,11 @@
   become: true
   when: inventory_hostname in groups['master']
 
+- name: kubeadm reset
+  command: kubeadm reset -y
+  become: true
+  when: inventory_hostname in groups['master']
+
 - name: defining POD network
   command: kubeadm init --pod-network-cidr 192.169.0.0/16
   become: true
@@ -72,7 +77,7 @@
   become: true
   with_items:
     - mkdir -p /root/.kube
-    - cp -i -y /etc/kubernetes/admin.conf /root/.kube/config
+    - cp -i /etc/kubernetes/admin.conf /root/.kube/config -y
     - chown root:root /root/.kube/config
     - kubectl get nodes
   when: inventory_hostname in groups['master']
