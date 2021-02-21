@@ -62,7 +62,8 @@
   when: inventory_hostname in groups['master']
 
 - name: reset kubeadm
-  command: yes 'y' | kubeadm reset
+  shell: >
+    kubeadm reset
   become: true
   when: inventory_hostname in groups['master']
 
