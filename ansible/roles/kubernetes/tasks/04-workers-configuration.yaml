@@ -36,6 +36,7 @@
 
 - debug:
     msg: "{{ init_output }}"
+  when: inventory_hostname in groups['master']
 
 #- name: Join workers to cluster
 #  command: ./join-command
