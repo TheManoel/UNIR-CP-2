@@ -34,18 +34,15 @@
   register: init_output
   when: inventory_hostname in groups['master']
 
-
 - name: Copy join command to local file
   local_action:
     module: copy
     content: |
-      {{ init_output }}
-#      {{ init_output.stdout_lines[-2] }}
-#      {{ init_output.stdout_lines[-1] }}
-    dest: "./join-command"
-#
+      {{ init_output.stdout[-2] }}
+      {{ init_output.stdout[-1] }}
+   dest: "./join-command"
 
-#- name: Join workers to cluster
-#  command: ./join-command
-#  become: true
-#  when: inventory_hostname in groups['workers']
+- name: Join workers to cluster
+  command: ./join-command
+  become: true
+  when: inventory_hostname in groups['workers']
