@@ -25,6 +25,9 @@
   register: kubeadm_pod_network
   when: inventory_hostname in groups['master']
 
+- debug:
+    msg: "{{ kubeadm_pod_network }}"
+
 - name: Join workers to cluster
   command: "{{ kubeadm_pod_network }}"
   become: true
