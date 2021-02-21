@@ -62,7 +62,7 @@
   when: inventory_hostname in groups['master']
 
 - name: kubeadm reset
-  command: kubeadm reset -y
+  command: yes 'y' | kubeadm reset
   become: true
   when: inventory_hostname in groups['master']
 
@@ -77,7 +77,7 @@
   become: true
   with_items:
     - mkdir -p /root/.kube
-    - cp -i /etc/kubernetes/admin.conf /root/.kube/config -y
+    - yes 'y' | cp -i /etc/kubernetes/admin.conf /root/.kube/config -y
     - chown root:root /root/.kube/config
     - kubectl get nodes
   when: inventory_hostname in groups['master']
