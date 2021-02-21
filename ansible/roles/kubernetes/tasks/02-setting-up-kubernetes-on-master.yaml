@@ -3,6 +3,7 @@
 - name: config firewall ports to access kubernetes
   firewalld:
     permanent: yes
+    state: enabled
     port: "{{ item }}"
   become: true
   with_items:
@@ -30,6 +31,7 @@
   firewalld:
     permanent: yes
     rich_rule: "{{ item }}"
+    state: enabled
   become: true
   with_items:
     - rule family=ipv4 source address={{master_ip}}/32 accept
@@ -46,6 +48,7 @@
 - name: config container access to localhost
   firewalld:
     permanent: yes
+    state: enabled
     zone: public
     rich_rule: rule family=ipv4 source address=172.17.0.0/16 accept
   become: true
