@@ -96,6 +96,8 @@
     name: kubeadmin
     state: present
     password: "{{ default_user_password | password_hash('sha512', 'A512') }}"
+  become: true
+  when: inventory_hostname in groups['master']
 
 - name: authorize kubeadmin user access to cluster
   command: "{{ item }}"
@@ -113,3 +115,4 @@
       ALL            ALL = (ALL) NOPASSWD: ALL
       EOF
   become: yes
+  when: inventory_hostname in groups['master']
