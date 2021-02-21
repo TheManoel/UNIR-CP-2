@@ -1,29 +1,39 @@
 ---
 
-- name: open firewall ports
-  firewalld:
-    permanent: yes
-    zone: public
-    state: enabled
-    port: "{{ item }}"
-  become: true
-  with_items:
-    - 10250/tcp
-    - 30000-32767/tcp
-  when: inventory_hostname in groups['workers']
+#- name: open firewall ports
+#  firewalld:
+#    permanent: yes
+#    zone: public
+#    state: enabled
+#    port: "{{ item }}"
+#  become: true
+#  with_items:
+#    - 10250/tcp
+#    - 30000-32767/tcp
+#  when: inventory_hostname in groups['workers']
+#
+#- name: reload service firewalld
+#  service:
+#    name: firewalld
+#    state: restarted
+#  become: true
+#  when: inventory_hostname in groups['workers']
 
-- name: reload service firewalld
-  service:
-    name: firewalld
-    state: restarted
+#
+- name: reset kubeadm
+  expect:
+    command: kubeadm reset
+    responses: 
+      '[y/N]': "y"
   become: true
-  when: inventory_hostname in groups['workers']
+  when: inventory_hostname in groups['master']
 
 - name: defining POD network
   command: kubeadm init --pod-network-cidr 192.169.0.0/16
   become: true
   register: kubeadm_pod_network
   when: inventory_hostname in groups['master']
+#
 
 - debug:
     msg: "{{ kubeadm_pod_network }}"
