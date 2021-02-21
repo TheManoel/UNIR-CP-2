@@ -1,7 +1,25 @@
 ---
 
+- name: Create Tigera operator
+  command: kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+  become: true
+  when: inventory_hostname in groups['master']
+
 - name: Download Calico custom resources
   get_url:
     url: https://docs.projectcalico.org/manifests/custom-resources.yaml
     dest: /etc/custom_resources.yaml
   become: true
+  when: inventory_hostname in groups['master']
+
+- name: Adapt Calico cidr to PODs network cidr
+  lineinfile:
+    path: /etc/custom_resources.yaml
+    regexp: '^cidr:'
+    line: "cidr: 192.169.0.0/16"
+  when: inventory_hostname in groups['master']
+
+- name: Install Calico
+  command: kubectl apply -f custom-resources.yaml
+  become: true
+  when: inventory_hostname in groups['master']
