@@ -4,3 +4,4 @@
   get_url:
     url: https://docs.projectcalico.org/manifests/custom-resources.yaml
     dest: /etc/custom_resources.yaml
+  become: true
