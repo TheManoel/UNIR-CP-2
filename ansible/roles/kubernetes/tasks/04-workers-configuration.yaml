@@ -19,6 +19,6 @@
   when: inventory_hostname in groups['worker']
 
 - name: Join workers to cluster
-  command: {{ kubeadm_pod_network }}
+  command: "{{ kubeadm_pod_network }}"
   become: true
   when: inventory_hostname in groups['worker']
