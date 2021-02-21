@@ -90,3 +90,26 @@
     - chown root:root /root/.kube/config
     - kubectl get nodes
   when: inventory_hostname in groups['master']
+
+- name: create kubeadmin user
+  user:
+    name: kubeadmin
+    state: present
+    password: "{{ default_user_password | password_hash('sha512', 'A512') }}"
+
+- name: authorize kubeadmin user access to cluster
+  command: "{{ item }}"
+  become: true
+  with_items:
+    - mkdir -p /home/kubeadmin/.kube
+    - cp /etc/kubernetes/admin.conf /home/kubeadmin/.kube/config
+    - chown kubeadmin:kubeadmin /home/kubeadmin/.kube/config
+  when: inventory_hostname in groups['master']
+
+- name: Add kubeadmin to sudoers
+  shell:
+    cmd: |
+      cat <<EOF > /etc/sudoers.d/kubeadmin
+      ALL            ALL = (ALL) NOPASSWD: ALL
+      EOF
+  become: yes
