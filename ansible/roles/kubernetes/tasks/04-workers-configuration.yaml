@@ -35,16 +35,14 @@
   when: inventory_hostname in groups['master']
 
 
-- debug:
-    msg: "{{ init_output }}"
-
-#- name: Copy join command to local file
-#  local_action:
-#    module: copy
-#    content: |
+- name: Copy join command to local file
+  local_action:
+    module: copy
+    content: |
+      {{ init_output }}
 #      {{ init_output.stdout_lines[-2] }}
 #      {{ init_output.stdout_lines[-1] }}
-#    dest: "./join-command"
+    dest: "./join-command"
 #
 
 #- name: Join workers to cluster
