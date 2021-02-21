@@ -62,7 +62,7 @@
   when: inventory_hostname in groups['master']
 
 - name: config kubeadm
-  command: kubeadm init --pod-network-cidr 192.169.0.0/16
+  command: kubeadm config images pull
   become: true
   when: inventory_hostname in groups['master']
 
