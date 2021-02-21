@@ -38,8 +38,7 @@
   local_action:
     module: copy
     content: |
-      {{ init_output.stdout[-2] }}
-      {{ init_output.stdout[-1] }}
+      {{ init_output.stdout }}
     dest: "./join-command"
 
 - name: Join workers to cluster
