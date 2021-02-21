@@ -72,7 +72,7 @@
   become: true
   with_items:
     - mkdir -p /root/.kube
-    - yes 'y' | cp -i /etc/kubernetes/admin.conf /root/.kube/config -y
+    - yes 'y' | cp -i /etc/kubernetes/admin.conf /root/.kube/config
     - chown root:root /root/.kube/config
     - kubectl get nodes
   when: inventory_hostname in groups['master']
