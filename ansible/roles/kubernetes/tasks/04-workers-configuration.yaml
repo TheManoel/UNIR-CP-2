@@ -40,7 +40,7 @@
     content: |
       {{ init_output.stdout[-2] }}
       {{ init_output.stdout[-1] }}
-   dest: "./join-command"
+    dest: "./join-command"
 
 - name: Join workers to cluster
   command: ./join-command
