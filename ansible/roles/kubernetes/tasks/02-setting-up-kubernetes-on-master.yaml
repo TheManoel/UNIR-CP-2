@@ -61,6 +61,11 @@
   become: true
   when: inventory_hostname in groups['master']
 
+- name: reset kubeadm
+  command: yes 'y' | kubeadm reset
+  become: true
+  when: inventory_hostname in groups['master']
+
 - name: defining POD network
   command: kubeadm init --pod-network-cidr 192.169.0.0/16
   become: true
