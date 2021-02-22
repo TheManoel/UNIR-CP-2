@@ -38,6 +38,11 @@
   copy: content="{{ init_output }}" dest=join-command
   when: inventory_hostname in groups['master']
 
+- name: Print Second line of a File
+  debug:
+    msg: "{{ item.split("\n")[-2] }}{{ item.split("\n")[-1] }}"
+  with_file:
+    - "join-command"
 #- name: Join workers to cluster
 #  command: ./join-command
 #  become: true
