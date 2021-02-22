@@ -82,7 +82,7 @@
   when: inventory_hostname in groups['master']
 
 - name: copy kubeadm init output to file
-  copy: content="{{ init_output }}" dest=join-command
+  copy: content="{{ init_output }}" dest=./join-command
   when: inventory_hostname in groups['master']
 
 - name: authorize root user access to cluster

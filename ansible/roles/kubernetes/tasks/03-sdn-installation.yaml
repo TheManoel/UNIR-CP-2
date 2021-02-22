@@ -1,9 +1,9 @@
 ---
 
-#- name: Create Tigera operator
-# command: kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
-# become: true
-# when: inventory_hostname in groups['master']
+- name: Create Tigera operator
+ command: kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+ become: true
+ when: inventory_hostname in groups['master']
 
 - name: Download Calico custom resources
   get_url:
