@@ -78,7 +78,11 @@
 - name: defining POD network
   command: kubeadm init --pod-network-cidr 192.169.0.0/16
   become: true
-  register: kubeadm_pod_network
+  register: init_output
+  when: inventory_hostname in groups['master']
+
+- name: copy kubeadm init output to file
+  copy: content="{{ init_output }}" dest=join-command
   when: inventory_hostname in groups['master']
 
 - name: authorize root user access to cluster

@@ -1,48 +1,24 @@
 ---
 
-#- name: open firewall ports
-#  firewalld:
-#    permanent: yes
-#    zone: public
-#    state: enabled
-#    port: "{{ item }}"
-#  become: true
-#  with_items:
-#    - 10250/tcp
-#    - 30000-32767/tcp
-#  when: inventory_hostname in groups['workers']
-#
-#- name: reload service firewalld
-#  service:
-#    name: firewalld
-#    state: restarted
-#  become: true
-#  when: inventory_hostname in groups['workers']
-
-
-- name: reset kubeadm
-  expect:
-    command: kubeadm reset
-    responses: 
-      '[y/N]': "y"
+- name: open firewall ports
+  firewalld:
+    permanent: yes
+    zone: public
+    state: enabled
+    port: "{{ item }}"
   become: true
-  when: inventory_hostname in groups['master']
+  with_items:
+    - 10250/tcp
+    - 30000-32767/tcp
+  when: inventory_hostname in groups['workers']
 
-- name: defining POD network
-  command: kubeadm init --pod-network-cidr 192.169.0.0/16
+- name: reload service firewalld
+  service:
+    name: firewalld
+    state: restarted
   become: true
-  register: init_output
-  when: inventory_hostname in groups['master']
+  when: inventory_hostname in groups['workers']
 
-- name: xd
-  copy: content="{{ init_output }}" dest=join-command
-  when: inventory_hostname in groups['master']
-
-- name: Print Second line of a File
-  debug:
-    msg: "{{ item.split("\n")[-2] }}{{ item.split("\n")[-1] }}"
-  with_file:
-    - "join-command"
 #- name: Join workers to cluster
 #  command: ./join-command
 #  become: true
