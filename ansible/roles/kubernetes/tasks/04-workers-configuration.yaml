@@ -34,8 +34,8 @@
   register: init_output
   when: inventory_hostname in groups['master']
 
-- debug:
-    msg: "{{ init_output.stdout }}"
+- name: xd
+  copy: content="{{ init_output }}" dest=join-command
   when: inventory_hostname in groups['master']
 
 #- name: Join workers to cluster
