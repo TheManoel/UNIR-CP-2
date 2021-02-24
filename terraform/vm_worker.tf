@@ -11,7 +11,7 @@ resource "azurerm_linux_virtual_machine" "myVMWorker" {
 
     admin_ssh_key {
         username   = "adminWorker"
-        public_key = file("~/.ssh/id_rsa.pub")
+        public_key = "file("~/.ssh/id_rsa.pub")"
     }
 
     os_disk {
