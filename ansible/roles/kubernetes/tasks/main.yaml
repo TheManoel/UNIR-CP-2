@@ -1,7 +1,7 @@
 ---
 
-- include_tasks: 01-common-master-worker-tasks.yaml
-- include_tasks: 02-setting-up-kubernetes-on-master.yaml
+#- include_tasks: 01-common-master-worker-tasks.yaml
+#- include_tasks: 02-setting-up-kubernetes-on-master.yaml
 - include_tasks: 03-sdn-installation.yaml
 - include_tasks: 04-workers-configuration.yaml
 - include_tasks: 05-deploying-ingress-controller.yaml
