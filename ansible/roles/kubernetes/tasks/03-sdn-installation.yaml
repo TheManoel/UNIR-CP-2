@@ -21,6 +21,6 @@
   when: inventory_hostname in groups['master']
 
 - name: Install Calico
-  command: kubectl apply -f custom-resources.yaml
+  command: kubectl apply -f /etc/custom_resources.yaml
   become: true
   when: inventory_hostname in groups['master']
