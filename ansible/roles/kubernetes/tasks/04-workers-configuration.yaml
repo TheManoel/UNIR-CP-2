@@ -19,6 +19,8 @@
   become: true
   when: inventory_hostname in groups['workers']
 
+# Si se trata la salida almacenada en join command para obtener las líneas del comando
+# en lugar de la salida entera, se puede ejecutar directamente en esta task.
 #- name: Join workers to cluster
 #  command: ./join-command
 #  become: true
